@@ -57,3 +57,37 @@
 - миграции базы данных через Liquibase;
 - покрытие ключевой бизнес-логики тестами.
 
+  
+## Модель данных
+
+Основные сущности:
+- Student
+- Teacher
+- Course
+- Enrollment
+- Payment
+
+Связи:
+- Course → Teacher (ManyToOne)
+- Enrollment → Student (ManyToOne)
+- Enrollment → Course (ManyToOne)
+- Payment → Student (ManyToOne)
+- Payment → Course (ManyToOne)
+
+## 🛠 Технологический стек
+
+- Java 17
+- Spring Boot 3
+- Spring Web (REST API)
+- Spring Data JPA
+- H2 (in-memory database, для разработки и тестирования)
+- Liquibase (миграции БД)
+- MapStruct (маппинг DTO ↔ Entity)
+- Lombok
+- Swagger (SpringDoc OpenAPI)
+- JUnit 5
+
+---
+
+## Документация API
+Используется Swagger UI
