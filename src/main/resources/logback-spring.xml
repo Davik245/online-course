@@ -1,0 +1,44 @@
+<configuration>
+
+    <appender name="jsonConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+
+            <!-- Запишем параметры, которые будут в консоли в виде JSON: -->
+            <providers>
+                <!-- Временная метка лога -->
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+
+                <!-- Уровень лога (INFO, ERROR, DEBUG) -->
+                <logLevel />
+
+                <!-- Имя класса и потока -->
+                <loggerName />
+                <threadName />
+
+                <!-- Сообщение лога -->
+                <message />
+
+                <!-- Stack trace, если есть исключение -->
+                <stackTrace />
+
+                <!-- Дополнительные поля, например имя сервиса -->
+                <mdc>
+                    <fieldNames>
+                        <fieldName key="serviceName" />
+                    </fieldNames>
+                </mdc>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- Уровни логирования -->
+    <root level="INFO">
+        <appender-ref ref="jsonConsole"/>
+    </root>
+
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="com.example" level="DEBUG"/>
+
+</configuration>
