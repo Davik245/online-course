@@ -6,6 +6,8 @@ import com.example.courses.dto.course_dto.CreateCoureseRequest;
 import com.example.courses.dto.course_dto.UpdateCourse;
 import com.example.courses.entity_status.CourseStatus;
 import com.example.courses.service.CourseService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +22,13 @@ import java.time.LocalDate;
 @RequestMapping("/api/courses")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Courses", description = "Операции с курсами")
 public class CourseController {
 
     private final CourseService service;
 
     @GetMapping
+    @Operation(summary = "Получение списка курсов")
     public Page<CourseResponse> findAll(
             @ModelAttribute CourseFilter filter,
             Pageable pageable
@@ -36,25 +40,28 @@ public class CourseController {
 
 
     @GetMapping("/{id}")
+    @Operation(summary = "Получить курс по ID")
     public CourseResponse get(@PathVariable Long id) {
         return service.getCourseById(id);
     }
 
 
     @PostMapping
+    @Operation(summary = "Создание курса")
     public CourseResponse create(@Valid @RequestBody CreateCoureseRequest dto) {
         return service.create(dto);
     }
 
 
     @PutMapping("/{id}")
-    public CourseResponse update(@PathVariable Long id,
-                                 @Valid @RequestBody UpdateCourse dto) {
+    @Operation(summary = "Обновление курса по ID", description = "Можно обновить некоторые данные о курсе")
+    public CourseResponse update(@PathVariable Long id, @Valid @RequestBody UpdateCourse dto) {
         return service.update(id, dto);
     }
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление курса по ID")
     public void delete(@PathVariable Long id) {
         service.deleteById(id);
     }
