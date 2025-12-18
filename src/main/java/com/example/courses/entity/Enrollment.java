@@ -16,6 +16,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Table(name = "enrollments")
 public class Enrollment {
+    // Кто и какой студент зачислен и на какой период
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
