@@ -76,7 +76,7 @@ public class TeacherService {
         log.info("Удаляем учителя с айди {}", id);
 
         if(!teacherRepo.existsById(id)) {
-            log.error("Учителя с айди {} не существует", id);
+            log.warn("Учителя с айди {} не существует", id);
             throw new EntityNotFoundException("Учитель не найден");
         }
 

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -23,9 +24,10 @@ public class StudentService {
     private final StudentRepo studentRepo;
     private final StudentMapper studentMapper;
 
+    @Transactional(readOnly = true)
     public Page<StudentResponse> getStudents(Pageable pageable, StudentFilter filter) {
         Specification<Student> spec = Specification.allOf(
-                StudentSpecification.fristNameContains(filter.firstName()),
+                StudentSpecification.firstNameContains(filter.firstName()),
                 StudentSpecification.lastNameContains(filter.lastName()),
                 StudentSpecification.middleNameContains(filter.middleName()),
                 StudentSpecification.emailContains(filter.email()),
@@ -40,9 +42,14 @@ public class StudentService {
 
     public void deleteStudent(Long id) {
         log.info("Удаление студента под айди {}", id);
+        if(!studentRepo.existsById(id)) {
+            log.warn("Студент не найден");
+            throw new EntityNotFoundException("Студент не найден");
+        }
         studentRepo.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public StudentResponse getStudent(Long id) {
         log.info("Ищем студента с айди {}", id);
 
