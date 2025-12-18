@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,13 +32,14 @@ public class CourseService {
         log.info("Удаляем курс с айди: " + id);
 
         if(!repo.existsById(id)) {
-            log.error("Курс с айди: " + id + " не существует");
+            log.warn("Курс с айди: " + id + " не существует");
             throw new EntityNotFoundException("Курс с айди: " + id + " не существует");
         }
 
         repo.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public CourseResponse getCourseById(Long id) {
         log.info("Получаем курс с айди: " + id);
 
@@ -47,8 +49,9 @@ public class CourseService {
         return courseMapper.toResponse(course);
     }
 
+    @Transactional(readOnly = true)
     public Page<CourseResponse> getCourses(CourseFilter filter, Pageable pageable) {
-        log.info("Получаем курсы..");
+        log.info("Получаем фильтр => {}", filter);
 
         Specification<Course> spec = Specification.allOf(
                 CourseSpecification.nameContains(filter.getName()),
@@ -59,6 +62,7 @@ public class CourseService {
                 CourseSpecification.startDateTo(filter.getStartDateTo()),
                 CourseSpecification.teacherId(filter.getTeacherId())
         );
+
 
         Page<Course> page = repo.findAll(spec, pageable);
 
